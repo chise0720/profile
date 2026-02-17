@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chise | 代替レシピと体調管理の世界</title>
+    <meta name="description" content="アレルギー対応の代替食材レシピや、体調管理・ヘルシーレシピを発信するChise의 ポートフォリオサイトです">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@200;400;500;700;900&family=Playfair+Display:ital,wght@1,400;1,500;1,600&family=Quicksand:wght@300;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --color-bg: #fdfbf7;
+            --color-text: #332d29;
+            --color-accent: #a68b6d;
+            --color-soft: #f4eee4;
+            --color-gold: #d4af37;
+            --color-dark-brown: #2b1a13;
+        }
+        body {
+            font-family: 'Noto Serif JP', serif;
+            background-color: var(--color-bg);
+            color: var(--color-text);
+            overflow-x: hidden;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+        .font-en { font-family: 'Quicksand', sans-serif; }
+        
+        .font-brand-italic {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-weight: 400;
+        }
+
+        /* スプラッシュ画面 */
+        #splash {
+            background-color: #000;
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 1s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        #splash-name {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-size: clamp(3.5rem, 12vw, 8.5rem);
+            color: #fff;
+            letter-spacing: 0.3em;
+            font-weight: 400;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+            padding-left: 0.3em;
+            text-shadow: 0 0 40px rgba(255, 255, 255, 0.1);
+        }
+        #splash-name.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* スクロール用スタイル：環境アイコンを避ける位置 */
+        .scroll-indicator {
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
+            position: fixed;
+            bottom: 120px;
+            right: 80px; 
+            z-index: 9000; 
+            font-family: 'Quicksand', sans-serif;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.4em;
+            text-transform: uppercase;
+            color: var(--color-accent);
+            opacity: 0;
+            transition: opacity 0.8s ease;
+            pointer-events: none;
+        }
+        .scroll-indicator::after {
+            content: "";
+            position: absolute;
+            bottom: -50px;
+            left: 50%;
+            width: 1px;
+            height: 40px;
+            background: linear-gradient(to bottom, var(--color-accent), transparent);
+            animation: scrollLine 2s infinite ease-in-out;
+        }
+        @keyframes scrollLine {
+            0% { transform: scaleY(0); transform-origin: top; }
+            50% { transform: scaleY(1); transform-origin: top; }
+            51% { transform: scaleY(1); transform-origin: border-bottom; }
+            100% { transform: scaleY(0); transform-origin: bottom; }
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 1s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .img-block-full {
+            width: 100%;
+            display: block;
+            object-fit: cover;
+            vertical-align: bottom;
+            transition: none !important;
+            transform: none !important;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* ヘッダーの白帯透過率を30%へ調整 */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        @keyframes slowPan {
+            0% { transform: translateX(0%); }
+            50% { transform: translateX(-3%); }
+            100% { transform: translateX(0%); }
+        }
+        .animate-bg-slide {
+            width: 110%; 
+            animation: slowPan 60s ease-in-out infinite;
+        }
+
+        .hero-sub-plate {
+            background: rgba(255, 255, 255, 0.18);
+            backdrop-filter: blur(10px);
+            border-top: 1px solid rgba(255, 255, 255, 0.4);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+            padding: 1.5rem 2rem;
+            display: inline-block;
+        }
+
+        .btn-premium-insta {
+            background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+            box-shadow: 0 4px 15px rgba(220, 39, 67, 0.4);
+            transition: all 0.3s ease;
+        }
+        .btn-premium-insta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(220, 39, 67, 0.6);
+        }
+
+        .btn-premium-threads {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.9);
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+        .btn-premium-threads:hover {
+            background: rgba(255, 255, 255, 1);
+            color: var(--color-dark-brown);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 255, 255, 0.3);
+        }
+
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--color-bg); }
+        ::-webkit-scrollbar-thumb { background: var(--color-accent); border-radius: 10px; }
+    </style>
+</head>
+<body class="selection:bg-[#a68b6d] selection:text-white">
+
+    <!-- オープニングアニメーション -->
+    <div id="splash">
+        <div id="splash-name">Chise</div>
+    </div>
+
+    <!-- SCROLLインジケーター -->
+    <div class="scroll-indicator" id="scroll-ind">SCROLL</div>
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 left-0 w-full z-50 px-6 md:px-12 py-2 flex justify-between items-center transition-all duration-300 glass-card shadow-sm" id="main-nav">
+        <div class="flex flex-col cursor-pointer" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+            <div class="text-lg md:text-xl font-brand-italic tracking-wider leading-none">Chise Portfolio</div>
+            <div class="text-[8px] md:text-[9px] font-bold tracking-[0.1em] opacity-70 mt-0.5">代替食材レシピ ＆ 体調管理</div>
+        </div>
+        <div class="hidden md:flex gap-8 lg:gap-12 text-[10px] tracking-widest uppercase font-bold font-en">
+            <a href="#vision" class="nav-link hover:text-accent transition-colors">Vision</a>
+            <a href="#recipes" class="nav-link hover:text-accent transition-colors">Recipes</a>
+            <a href="#ai" class="nav-link hover:text-accent transition-colors">AI健康レシピ</a>
+            <a href="#qa" class="nav-link hover:text-accent transition-colors">Q & A</a>
+            <a href="#contact" class="nav-link hover:text-accent transition-colors">Contact</a>
+        </div>
+    </nav>
+
+    <!-- 01. Hero -->
+    <header id="hero" class="relative pt-0 flex flex-col items-center overflow-hidden bg-white">
+        <div class="w-full h-[60vh] md:h-[70vh] lg:h-[80vh] relative flex items-center justify-center overflow-hidden leading-[0] m-0 p-0">
+            <img src="https://images.unsplash.com/photo-1556911220-e15b29be8c8f?auto=format&fit=crop&q=80&w=2000" 
+                 alt="Woman Cooking in Kitchen" 
+                 class="absolute inset-0 h-full object-cover animate-bg-slide z-0">
+            <div class="absolute inset-0 bg-[#2b1a13]/35 backdrop-blur-[4px] z-10"></div>
+
+            <div class="relative z-20 text-center px-6 md:px-12 w-full max-w-6xl reveal leading-normal mt-16">
+                <h1 class="font-black leading-tight mb-12 text-white">
+                    <span class="text-lg md:text-3xl lg:text-4xl block mb-6 font-medium opacity-90 tracking-wide">食べることを</span>
+                    <span class="text-2xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl block leading-[1.3] tracking-tight">
+                        <span class="text-[#d4af37] drop-shadow-[0_4px_12px_rgba(0,0,0,0.7)]">「我慢する事から楽しい」</span>に変える
+                    </span>
+                </h1>
+                <div class="hero-sub-plate">
+                    <p class="text-sm md:text-xl lg:text-2xl leading-relaxed max-w-4xl mx-auto opacity-100 font-bold text-white tracking-[0.15em] drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]">
+                        体と心を満たす『代替レシピ』と『体調管理レシピ』の世界
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="relative z-10 max-w-2xl text-center px-4 py-8 bg-white w-full flex flex-col items-center m-0 p-0 pb-4">
+            <div class="text-sm md:text-lg opacity-80 reveal font-medium px-4 text-center leading-loose tracking-wider">
+                代替調味料や代替食材を見つけたら、<br>
+                食べることが楽しいと思える時間が増えていく<br>
+                <div class="mt-4 inline-flex items-center gap-4">
+                    <span class="hidden md:block w-8 h-[1px] bg-[#d4af37]/40"></span>
+                    <span class="font-brand-italic text-[#a68b6d] text-base md:text-xl font-medium tracking-[0.15em] opacity-100">
+                        Chiseが提案するヘルシー＆代替食材レシピ
+                    </span>
+                    <span class="hidden md:block w-8 h-[1px] bg-[#d4af37]/40"></span>
+                </div>
+            </div>
+
+            <div class="flex justify-center mt-8 reveal font-en">
+                <a href="https://www.instagram.com/chise.daiyo.cook" target="_blank" class="group px-10 py-3.5 btn-premium-insta text-white rounded-full flex items-center justify-center gap-3">
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                    <span class="tracking-widest text-[11px] font-bold uppercase">INSTAGRAM</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- 02. my vision -->
+    <section id="vision" class="py-16 px-6 bg-white overflow-hidden">
+        <div class="max-w-6xl mx-auto">
+            <div class="reveal text-left">
+                <h2 class="text-[var(--color-dark-brown)] flex items-center mb-4">
+                    <span class="font-bold text-[#d4af37] text-[1.1rem] md:text-[1.4rem] lg:text-[1.6rem] mr-4 md:mr-6 leading-none">02</span>
+                    <div class="flex flex-col items-start border-t border-b border-[#a68b6d]/30 py-2">
+                        <span class="text-xl md:text-2xl lg:text-3xl uppercase tracking-wider font-bold">my vision</span>
+                    </div>
+                </h2>
+                <div class="text-[#a68b6d] text-sm md:text-base font-bold mb-8 tracking-widest">
+                    ～AIで、体にやさしい健康習慣を自動化する～
+                </div>
+                <div class="text-base md:text-xl opacity-80 font-medium leading-loose tracking-wider mb-6">
+                    <p>
+                        自炊は本来、楽しいもの<br>
+                        けれど栄養計算やメニュー選びは、<br class="hidden md:block">
+                        Webマーケターとして忙しく働く私にとって大きな負担でした<br><br>
+                        だからこそ私は、<br>
+                        無理に頑張るのではなく、AIを味方にして食事管理を仕組み化することを選びました<br><br>
+                        自炊を「義務」から「心地よい習慣」へ<br>
+                        AIの力で、体にも心にもやさしい暮らしをつくる<br>
+                        そんなライフスタイルを、この場所から共有していきたいと思います
+                    </p>
+                </div>
+                
+                <div class="reveal mt-6 text-center">
+                    <div class="relative inline-block group">
+                        <div class="absolute -inset-1 bg-gradient-to-r from-[#d4af37]/0 via-[#d4af37]/10 to-[#d4af37]/0 opacity-0 group-hover:opacity-100 transition-opacity duration-1000"></div>
+                        <span class="relative z-10 text-lg md:text-2xl lg:text-3xl font-bold text-[var(--color-dark-brown)] tracking-[0.1em] block">
+                            「心もお腹も満たされるとき、人は一番美しくなれる」
+                        </span>
+                        <div class="absolute bottom-2 left-0 w-full h-[12px] bg-[#d4af37]/15 -z-0 rounded-full"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 03. Recipes -->
+    <section id="recipes" class="py-0 bg-soft/30 overflow-hidden">
+        <div class="max-w-7xl mx-auto px-6 py-10">
+            <div class="flex flex-col md:flex-row justify-between items-end gap-6 reveal text-left">
+                <div class="max-w-4xl text-left">
+                    <h2 class="text-[var(--color-dark-brown)] flex items-center mb-4">
+                        <span class="font-bold text-[#d4af37] text-[1.1rem] md:text-[1.4rem] lg:text-[1.6rem] mr-4 md:mr-6 leading-none">03</span>
+                        <div class="flex flex-col items-start border-t border-b border-[#a68b6d]/30 py-2">
+                            <span class="text-xl md:text-2xl lg:text-3xl uppercase tracking-wider font-bold">Recipes</span>
+                        </div>
+                    </h2>
+                    <div class="text-[#a68b6d] text-sm md:text-base font-bold mb-2 tracking-widest">
+                        ～理想の体型を維持するためのメニュー～
+                    </div>
+                    <p class="text-sm md:text-base opacity-70 leading-relaxed font-bold text-[var(--color-text)]">私が作ったレシピの一部。そのほかのレシピはInstagramで公開</p>
+                </div>
+                <div class="pb-2">
+                    <a href="https://www.instagram.com/chise.daiyo.cook" target="_blank" class="flex items-center gap-2 px-6 py-2.5 bg-[#a68b6d] text-white rounded-full shadow hover:bg-[#92785a] transition-all font-en font-bold text-[10px] tracking-widest uppercase">
+                        <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                        Instagram
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-0 overflow-hidden leading-[0]">
+            <!-- Soup -->
+            <div class="reveal group border-b border-[#d1c7bc]/30 overflow-hidden">
+                <a href="https://www.instagram.com/reel/DCgsuH1hgY7/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==" target="_blank" class="block cursor-pointer bg-[#f4eee4] aspect-video overflow-hidden">
+                    <img src="https://raw.githubusercontent.com/mokomoko-ai/profile/main/assets/tamanegi.webp" alt="Soup" class="img-block-full w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" style="object-position: center 30%;">
+                </a>
+                <div class="p-8 text-left bg-white/40 leading-normal">
+                    <span class="text-[10px] tracking-[0.2em] uppercase opacity-50 mb-2 block font-bold font-en">Soup</span>
+                    <h3 class="text-xl md:text-2xl mb-2 font-bold">Soup：冬瓜の白スープ</h3>
+                    <p class="text-sm md:text-base opacity-70 font-medium">遅い時間に食べても大丈夫。豆乳で作るヘルシーなデトックススープ</p>
+                </div>
+            </div>
+            <!-- Main -->
+            <div class="reveal group border-b border-[#d1c7bc]/30 overflow-hidden">
+                <a href="https://www.instagram.com/p/DUKMCObkSGw/" target="_blank" class="block cursor-pointer bg-[#f4eee4] aspect-video overflow-hidden">
+                    <img src="https://raw.githubusercontent.com/mokomoko-ai/profile/main/assets/bejitaburu.webp" alt="Main" class="img-block-full w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+                </a>
+                <div class="p-8 text-left bg-white/40 leading-normal">
+                    <span class="text-[10px] tracking-[0.2em] uppercase opacity-50 mb-2 block font-bold font-en">Main</span>
+                    <h3 class="text-xl md:text-2xl mb-2 font-bold">Main：野菜たっぷりガトーインビジブル</h3>
+                    <p class="text-sm md:text-base opacity-70 font-medium">野菜不足を解消。豆乳と米粉で作る罪悪感なしのキッシュ</p>
+                </div>
+            </div>
+            <!-- Sweet：表記修正 -->
+            <div class="reveal group overflow-hidden border-b md:border-b-0 border-[#d1c7bc]/30">
+                <a href="https://www.instagram.com/p/DTrUfllEeJq/" target="_blank" class="block cursor-pointer bg-[#f4eee4] aspect-video overflow-hidden">
+                    <img src="https://raw.githubusercontent.com/mokomoko-ai/profile/main/assets/nutcreem.webp" alt="Sweet" class="img-block-full w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" style="object-position: center top;">
+                </a>
+                <div class="p-8 text-left bg-white/40">
+                    <span class="text-[10px] tracking-[0.2em] uppercase opacity-50 mb-2 block font-bold font-en">Sweet</span>
+                    <h3 class="text-xl md:text-2xl mb-2 font-bold">Sweet：ナッツ&レーズンクリーム</h3>
+                    <p class="text-sm md:text-base opacity-70 font-medium">チーズを使わない大人ログ。ワインにも夜のテータイムにも罪悪感なしで食べれる大人レシピ</p>
+                </div>
+            </div>
+            <!-- Side Dish -->
+            <div class="reveal group overflow-hidden">
+                <a href="https://www.instagram.com/reel/DAN8SFfhIMl/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==" target="_blank" class="block cursor-pointer bg-[#f4eee4] aspect-video overflow-hidden">
+                    <img src="https://raw.githubusercontent.com/mokomoko-ai/profile/main/assets/potesara.webp" alt="Side Dish" class="img-block-full w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" style="object-position: center top;">
+                </a>
+                <div class="p-8 text-left bg-white/40">
+                    <span class="text-[10px] tracking-[0.2em] uppercase opacity-50 mb-2 block font-bold font-en">Side Dish</span>
+                    <h3 class="text-xl md:text-2xl mb-2 font-bold">Side Dish：砂糖なしのポテトサラダ（楽天レシピ優秀賞）</h3>
+                    <p class="text-sm opacity-70 font-medium">砂糖を使わなくても甘さを感じるポテトサラダが出来上がりました。糖質を調整している方にもおすすめ</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 04. 自作カスタムGPTs -->
+    <section id="ai" class="py-10 px-6 bg-white overflow-hidden">
+        <div class="max-w-6xl mx-auto">
+            <div class="reveal text-left mb-6">
+                <h2 class="text-[var(--color-dark-brown)] flex items-center mb-1">
+                    <span class="font-bold text-[#d4af37] text-[1.1rem] md:text-[1.4rem] lg:text-[1.6rem] mr-4 md:mr-6 leading-none">04</span>
+                    <div class="flex flex-col items-start border-t border-b border-[#a68b6d]/30 py-2">
+                        <span class="text-xl md:text-2xl lg:text-3xl font-bold tracking-wider">自作カスタムGPTs</span>
+                    </div>
+                </h2>
+                <div class="text-sm md:text-base opacity-70 font-medium mb-4 leading-relaxed">
+                    独自のデータセットを学習させたカスタムGPTs<br>
+                    体質や食後の体感をヒアリングし、その時に最適な栄養バランスを導き出します
+                </div>
+
+                <div class="border-t border-b border-[#a68b6d]/20 py-3 mb-6 inline-block w-full sm:w-auto">
+                    <p class="text-[11px] md:text-xs text-[#a68b6d] font-bold leading-relaxed">
+                        ※提案内容は医療的な診断や治療、専門家による食事内容ではありません
+                    </p>
+                </div>
+            </div>
+
+            <div class="reveal flex justify-center mt-2">
+                <div class="w-full max-w-4xl bg-white rounded-3xl shadow-2xl border-[6px] border-[#2b1a13] overflow-hidden flex flex-col h-[500px]">
+                    <div class="px-6 py-4 border-b border-gray-100 flex items-center justify-between bg-white/90 sticky top-0">
+                        <div class="flex items-center gap-3">
+                            <span class="font-bold text-sm">AI健康レシピ 5.2</span>
+                            <svg class="w-3 h-3 opacity-30" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        </div>
+                    </div>
+                    
+                    <div class="flex-1 p-8 space-y-8 overflow-y-auto text-left">
+                        <div class="flex justify-end">
+                            <div class="bg-gray-100 px-5 py-2 rounded-full text-xs font-medium text-[var(--color-text)]">お願い</div>
+                        </div>
+                        <div class="max-w-[80%]">
+                            <p class="text-sm leading-relaxed text-gray-800 mb-2">今回が初めてですか？それともリピートですか？</p>
+                        </div>
+                        <div class="flex justify-end">
+                            <div class="bg-gray-100 px-5 py-2 rounded-full text-xs font-medium border border-gray-200 text-[var(--color-text)]">リピート</div>
+                        </div>
+                        <div class="max-w-[85%]">
+                            <p class="text-sm leading-relaxed text-gray-800">
+                                ありがとうございます。<br><br>
+                                ① 前回の食事量はどうでしたか？<br>
+                                ② 食後30〜60分の体感で気になることはありましたか？<br>
+                                ③ 今回は調整したい点はありますか？（量／味／なし）
+                            </p>
+                        </div>
+                    </div>
+                    <div class="p-6 border-t border-gray-50 flex justify-center bg-gray-50/30">
+                        <div class="w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center text-gray-300">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M19 14l-7 7-7-7"></path></svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 05. Q & A -->
+    <section id="qa" class="py-16 px-6 bg-[var(--color-bg)] overflow-hidden border-b border-gray-100">
+        <div class="max-w-6xl mx-auto reveal">
+            <h2 class="text-[var(--color-dark-brown)] flex items-center mb-2">
+                <span class="font-bold text-[#d4af37] text-[1.1rem] md:text-[1.4rem] lg:text-[1.6rem] mr-4 md:mr-6 leading-none">05</span>
+                <div class="flex flex-col items-start border-t border-b border-[#a68b6d]/30 py-2">
+                    <span class="text-2xl md:text-3xl lg:text-4xl tracking-widest font-bold">Q & A</span>
+                </div>
+            </h2>
+            <p class="text-sm md:text-base opacity-60 font-bold mb-16 tracking-widest text-left text-[var(--color-text)]">～よくある質問をまとめました～</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-x-16 gap-y-12 text-left">
+                <div class="border-b border-[#a68b6d]/10 pb-8">
+                    <div class="flex gap-4 mb-4">
+                        <span class="font-black text-[#d4af37] text-lg">Q1.</span>
+                        <p class="font-bold text-base md:text-lg leading-snug text-[var(--color-dark-brown)]">今までのアレルギー代替メニューは終わりですか？</p>
+                    </div>
+                    <div class="flex gap-4 pl-1">
+                        <span class="font-black text-gray-300 text-lg">A.</span>
+                        <p class="text-sm md:text-base opacity-80 leading-relaxed text-[var(--color-text)]">継続して投稿します。AIに私のアレルギー食材を保存して、メニューに出さないようにしています</p>
+                    </div>
+                </div>
+                <div class="border-b border-[#a68b6d]/10 pb-8">
+                    <div class="flex gap-4 mb-4">
+                        <span class="font-black text-[#d4af37] text-lg">Q2.</span>
+                        <p class="font-bold text-base md:text-lg leading-snug text-[var(--color-dark-brown)]">この通りに食べれば誰でも体重管理できますか？</p>
+                    </div>
+                    <div class="flex gap-4 pl-1">
+                        <span class="font-black text-gray-300 text-lg">A.</span>
+                        <p class="text-sm md:text-base opacity-80 leading-relaxed text-[var(--color-text)]">結果を保証するものではありません。個人差があるため、「合いそうかどうか」を見ながら参考にしてください</p>
+                    </div>
+                </div>
+                <div class="border-b border-[#a68b6d]/10 pb-8">
+                    <div class="flex gap-4 mb-4">
+                        <span class="font-black text-[#d4af37] text-lg">Q3.</span>
+                        <p class="font-bold text-base md:text-lg leading-snug text-[var(--color-dark-brown)]">これは医師や管理栄養士が作ったものですか？</p>
+                    </div>
+                    <div class="flex gap-4 pl-1">
+                        <span class="font-black text-gray-300 text-lg">A.</span>
+                        <p class="text-sm md:text-base opacity-80 leading-relaxed text-[var(--color-text)]">いいえ。医療的な診断や治療、専門家による食事内容ではありません</p>
+                    </div>
+                </div>
+                <div class="border-b border-[#a68b6d]/10 pb-8">
+                    <div class="flex gap-4 mb-4">
+                        <span class="font-black text-[#d4af37] text-lg">Q4.</span>
+                        <p class="font-bold text-base md:text-lg leading-snug text-[var(--color-dark-brown)]">食事制限や我慢は必要ですか？</p>
+                    </div>
+                    <div class="flex gap-4 pl-1">
+                        <span class="font-black text-gray-300 text-lg">A.</span>
+                        <p class="text-sm md:text-base opacity-80 leading-relaxed text-[var(--color-text)]">基本的に必要ありません。「制限」よりも良質なタンパク質を取り入れるなど、足し算の考え方を重視しています</p>
+                    </div>
+                </div>
+                <div class="border-b border-[#a68b6d]/10 pb-8">
+                    <div class="flex gap-4 mb-4">
+                        <span class="font-black text-[#d4af37] text-lg">Q5.</span>
+                        <p class="font-bold text-base md:text-lg leading-snug text-[var(--color-dark-brown)]">AIレシピは誰でも使えますか？</p>
+                    </div>
+                    <div class="flex gap-4 pl-1">
+                        <span class="font-black text-gray-300 text-lg">A.</span>
+                        <p class="text-sm md:text-base opacity-80 leading-relaxed text-[var(--color-text)]">カスタムGPTsで私が制作したアプリになります。一般的なレシピ提案と同じではありません</p>
+                    </div>
+                </div>
+                <div class="border-b border-[#a68b6d]/10 pb-8">
+                    <div class="flex gap-4 mb-4">
+                        <span class="font-black text-[#d4af37] text-lg">Q6.</span>
+                        <p class="font-bold text-base md:text-lg leading-snug text-[var(--color-dark-brown)]">体質テストは科学的に正しいのですか？</p>
+                    </div>
+                    <div class="flex gap-4 pl-1">
+                        <span class="font-black text-gray-300 text-lg">A.</span>
+                        <p class="text-sm md:text-base opacity-80 leading-relaxed text-[var(--color-text)]">医学的な診断ではありません。食事後の体感やカロリー確認など、本人が実感しやすいポイントを元に構成したものです</p>
+                    </div>
+                </div>
+                <div class="border-b border-[#a68b6d]/10 pb-8">
+                    <div class="flex gap-4 mb-4">
+                        <span class="font-black text-[#d4af37] text-lg">Q7.</span>
+                        <p class="font-bold text-base md:text-lg leading-snug text-[var(--color-dark-brown)]">冷え性や胃腸が弱い人でも大丈夫ですか？</p>
+                    </div>
+                    <div class="flex gap-4 pl-1">
+                        <span class="font-black text-gray-300 text-lg">A.</span>
+                        <p class="text-sm md:text-base opacity-80 leading-relaxed text-[var(--color-text)]">今の私の状態です。改善して病気知らずになろう！を目指しています。面倒なことはAI任せです</p>
+                    </div>
+                </div>
+                <div class="border-b border-[#a68b6d]/10 pb-8">
+                    <div class="flex gap-4 mb-4">
+                        <span class="font-black text-[#d4af37] text-lg">Q8.</span>
+                        <p class="font-bold text-base md:text-lg leading-snug text-[var(--color-dark-brown)]">外食やコンビニでも使えますか？</p>
+                    </div>
+                    <div class="flex gap-4 pl-1">
+                        <span class="font-black text-gray-300 text-lg">A.</span>
+                        <p class="text-sm md:text-base opacity-80 leading-relaxed text-[var(--color-text)]">使えます。「主食＋メイン＋野菜」を目安に近い形を選んでもらえれば十分です</p>
+                    </div>
+                </div>
+                <div class="border-b border-[#a68b6d]/10 pb-8">
+                    <div class="flex gap-4 mb-4">
+                        <span class="font-black text-[#d4af37] text-lg">Q9.</span>
+                        <p class="font-bold text-base md:text-lg leading-snug text-[var(--color-dark-brown)]">食べていて不調を感じたら？</p>
+                    </div>
+                    <div class="flex gap-4 pl-1">
+                        <span class="font-black text-gray-300 text-lg">A.</span>
+                        <p class="text-sm md:text-base opacity-80 leading-relaxed text-[var(--color-text)]">無理に続けず、不調が続く場合は医療機関の判断を優先してください</p>
+                    </div>
+                </div>
+                <div class="border-b border-[#a68b6d]/10 pb-8">
+                    <div class="flex gap-4 mb-4">
+                        <span class="font-bold text-base md:text-lg leading-snug text-[var(--color-dark-brown)]">途中でやめても問題ありませんか？</span>
+                    </div>
+                    <div class="flex gap-4 pl-1">
+                        <span class="font-black text-gray-300 text-lg">A.</span>
+                        <p class="text-sm md:text-base opacity-80 leading-relaxed text-[var(--color-text)]">まったく問題ありません。体質はみんな違います。必要な時に必要な部分だけ使ってください</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Profile & Closing Message -->
+    <section id="profile" class="pt-0 pb-12 px-6 text-center bg-white overflow-hidden">
+        <div class="max-w-4xl mx-auto text-center reveal">
+            <!-- 拡大率 115% を維持。人物配置 30% 55% で頭上のゆとりを確保 -->
+            <div class="w-64 h-64 md:w-80 md:h-80 rounded-full bg-soft mx-auto mb-2 overflow-hidden shadow-2xl">
+                <img src="https://raw.githubusercontent.com/mokomoko-ai/profile/main/assets/purofu.webp" 
+                     alt="Chise Profile" 
+                     class="w-full h-full object-cover scale-[1.15] origin-center"
+                     style="object-position: 30% 55%;">
+            </div>
+            
+            <h3 class="text-3xl md:text-4xl mb-4 font-bold text-[var(--color-dark-brown)] text-center">Chise</h3>
+            
+            <div class="mb-6 flex flex-col items-center">
+                <div class="relative py-4 px-6">
+                    <!-- レイヤード・タイポグラフィ -->
+                    <div class="absolute inset-0 flex items-center justify-center pointer-events-none opacity-[0.04]">
+                        <span class="font-brand-italic text-6xl md:text-9xl whitespace-nowrap text-[var(--color-gold)]">Love yourself</span>
+                    </div>
+                    
+                    <!-- メインコンテンツ -->
+                    <div class="relative z-10 text-center">
+                        <span class="text-xl md:text-2xl lg:text-3xl font-bold text-[var(--color-dark-brown)] tracking-[0.15em] leading-relaxed block">
+                            私だけではなく、みんなの理想の体型を維持するための<br>
+                            <span class="text-[var(--color-accent)] relative inline-block">
+                                仕組みづくりを叶える食卓
+                                <span class="absolute bottom-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-[var(--color-gold)] to-transparent opacity-60"></span>
+                            </span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-base md:text-xl opacity-80 max-w-3xl mx-auto font-medium text-center leading-loose tracking-wider">
+                AIの力と自身の経験を詰め込んだこの仕組みのレシピが<br>
+                あなたの毎日をより健やかで、自信に満ちたものに<br class="hidden md:block">
+                変えるきっかけになると嬉しいです
+            </div>
+        </div>
+    </section>
+
+    <!-- 06. Contact -->
+    <section id="contact" class="pt-8 pb-24 bg-[var(--color-bg)] border-t border-[#a68b6d]/10 text-[var(--color-text)] px-6 overflow-hidden flex flex-col items-center">
+        <div class="max-w-4xl w-full text-center reveal">
+            <h2 class="font-bold mb-10 text-[var(--color-dark-brown)] whitespace-nowrap flex items-center justify-center text-center">
+                <span class="font-bold text-[#d4af37] text-[0.9rem] md:text-[1.1rem] lg:text-[1.4rem] mr-4 md:mr-6 leading-none">06</span>
+                <div class="flex flex-col items-start border-t border-b border-[#a68b6d]/30 py-2">
+                    <span class="text-xl md:text-2xl lg:text-3xl uppercase tracking-wider font-bold">Contact</span>
+                </div>
+            </h2>
+            
+            <p class="text-base md:text-xl opacity-90 mb-12 font-bold leading-relaxed px-4 text-center text-[var(--color-text)]">
+                企業、メディア様向けのお仕事依頼は<br class="md:hidden">InstagramのDMより承っております
+            </p>
+
+            <div class="flex flex-wrap justify-center gap-6 mt-4">
+                <a href="https://www.instagram.com/chise.daiyo.cook" target="_blank" class="flex items-center gap-4 px-12 py-4 btn-premium-insta text-white rounded-full font-en font-bold text-sm tracking-widest uppercase shadow-2xl">
+                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                    INSTAGRAM
+                </a>
+                <a href="https://www.threads.net/@chise.daiyo.cook" target="_blank" class="flex items-center gap-4 px-12 py-4 btn-premium-threads !text-[var(--color-dark-brown)] !border-[var(--color-dark-brown)] rounded-full font-en font-bold text-sm tracking-widest uppercase shadow-xl hover:!bg-[var(--color-dark-brown)] hover:!text-white transition-all">
+                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M14.316 12.441c0 .793-.323 1.488-1.042 1.488s-1.026-.695-1.026-1.488v-2.053c0-.793.323-1.488 1.026-1.488s1.042.695 1.042 1.488v2.053zm3.17-2.053c0-2.45-1.748-4.225-4.212-4.225-2.463 0-4.211 1.775-4.211 4.225v2.053c0 2.45 1.748 4.225 4.212 4.225 1.256 0 2.227-.476 2.915-1.256l1.242 1.242c-.991 1.137-2.436 1.902-4.157 1.902-3.488 0-6.101-2.548-6.101-6.113v-2.053c0-3.565 2.613-6.113 6.101-6.113 3.488 0 6.101 2.548 6.101 6.113v3.067c0 1.242-.622 1.902-1.547 1.902-.82 0-1.408-.436-1.547-1.124-.595.78-1.507 1.124-2.423 1.124-1.902 0-3.131-1.348-3.131-3.321V10.388c0-1.973 1.229-3.321 3.131-3.321 1.058 0 1.99.489 2.502 1.348V10.388z"/></svg>
+                    THREADS
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-6 px-6 text-center bg-[var(--color-bg)] border-t border-[#a68b6d]/10 leading-none">
+        <p class="text-[9px] uppercase tracking-[0.5em] opacity-30 text-[var(--color-text)] font-en font-bold m-0 p-0 text-center">
+            &copy; <span id="year"></span> CHISE | SUBSTITUTE RECIPES. ALL RIGHTS RESERVED.
+        </p>
+    </footer>
+
+    <script>
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        // ページ読み込み時の処理
+        window.onload = function() {
+            const splash = document.getElementById('splash');
+            const splashName = document.getElementById('splash-name');
+            const scrollInd = document.getElementById('scroll-ind');
+
+            // 名前表示
+            setTimeout(() => { splashName.classList.add('active'); }, 400);
+
+            // スプラッシュ消去 & SCROLL表示
+            setTimeout(() => {
+                splash.style.opacity = '0';
+                
+                // 背景が見え始めたタイミングでSCROLLを表示
+                setTimeout(() => {
+                    splash.style.display = 'none';
+                    scrollInd.style.opacity = '1';
+                }, 500); 
+            }, 2000); 
+        };
+
+        // ナビゲーション
+        document.querySelectorAll('.nav-link').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    const navHeight = document.getElementById('main-nav').offsetHeight;
+                    const elementPosition = targetElement.getBoundingClientRect().top;
+                    const offsetPosition = elementPosition + window.pageYOffset - (navHeight - 10);
+                    window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
+                }
+            });
+        });
+
+        // 監視
+        const observerOptions = { threshold: 0.1, rootMargin: '0px 0px -50px 0px' };
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('active'); });
+        }, observerOptions);
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    </script>
+</body>
+</html>
