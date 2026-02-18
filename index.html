@@ -274,8 +274,9 @@
                 <div class="reveal mt-6 text-center">
                     <div class="relative inline-block group">
                         <div class="absolute -inset-1 bg-gradient-to-r from-[#d4af37]/0 via-[#d4af37]/10 to-[#d4af37]/0 opacity-0 group-hover:opacity-100 transition-opacity duration-1000"></div>
+                        <!-- 文章修正：スマホで見やすい位置（とき、の直後）で改行 -->
                         <span class="relative z-10 text-lg md:text-2xl lg:text-3xl font-bold text-[var(--color-dark-brown)] tracking-[0.1em] block">
-                            「心もお腹も満たされるとき、人は一番美しくなれる」
+                            「心もお腹も満たされるとき、<br class="md:hidden">人は一番美しくなれる」
                         </span>
                         <div class="absolute bottom-2 left-0 w-full h-[12px] bg-[#d4af37]/15 -z-0 rounded-full"></div>
                     </div>
@@ -521,7 +522,8 @@
                 </div>
                 <div class="border-b border-[#a68b6d]/10 pb-8">
                     <div class="flex gap-4 mb-4">
-                        <span class="font-bold text-base md:text-lg leading-snug text-[var(--color-dark-brown)]">途中でやめても問題ありませんか？</span>
+                        <span class="font-black text-[#d4af37] text-lg">Q10.</span>
+                        <p class="font-bold text-base md:text-lg leading-snug text-[var(--color-dark-brown)]">途中でやめても問題ありませんか？</p>
                     </div>
                     <div class="flex gap-4 pl-1">
                         <span class="font-black text-gray-300 text-lg">A.</span>
@@ -552,7 +554,7 @@
                         <span class="font-brand-italic text-6xl md:text-9xl whitespace-nowrap text-[var(--color-gold)]">Love yourself</span>
                     </div>
                     
-                    <!-- メインコンテンツ：スマホで2行になるように改行を調整 -->
+                    <!-- メインコンテンツ：見切れないようにvwベースの可変フォントサイズを採用 -->
                     <div class="relative z-10 text-center">
                         <span class="text-[3.4vw] min-[450px]:text-[15px] sm:text-xl md:text-2xl lg:text-3xl font-bold text-[var(--color-dark-brown)] tracking-[0.15em] leading-relaxed block">
                             私だけではなく、<br class="md:hidden">みんなの理想の体型を維持するために<br>
