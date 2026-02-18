@@ -535,7 +535,7 @@
     <!-- Profile & Closing Message -->
     <section id="profile" class="pt-0 pb-12 px-6 text-center bg-white overflow-hidden">
         <div class="max-w-4xl mx-auto text-center reveal">
-            <!-- プロフィール画像を差し替え。拡大率 115%・人物位置調整済み -->
+            <!-- 拡大率 115%・人物配置 30% 55% -->
             <div class="w-64 h-64 md:w-80 md:h-80 rounded-full bg-soft mx-auto mb-2 overflow-hidden shadow-2xl">
                 <img src="https://raw.githubusercontent.com/mokomoko-ai/profile/main/assets/purofu1.webp" 
                      alt="Chise Profile" 
@@ -552,10 +552,10 @@
                         <span class="font-brand-italic text-6xl md:text-9xl whitespace-nowrap text-[var(--color-gold)]">Love yourself</span>
                     </div>
                     
-                    <!-- メインコンテンツ：見切れないようにvwベースの可変フォントサイズを採用 -->
+                    <!-- メインコンテンツ：スマホで2行になるように改行を調整 -->
                     <div class="relative z-10 text-center">
-                        <span class="text-[3.4vw] min-[450px]:text-[15px] sm:text-xl md:text-2xl lg:text-3xl font-bold text-[var(--color-dark-brown)] tracking-[0.15em] leading-relaxed block whitespace-nowrap">
-                            私だけではなく、みんなの理想の体型を維持するために<br>
+                        <span class="text-[3.4vw] min-[450px]:text-[15px] sm:text-xl md:text-2xl lg:text-3xl font-bold text-[var(--color-dark-brown)] tracking-[0.15em] leading-relaxed block">
+                            私だけではなく、<br class="md:hidden">みんなの理想の体型を維持するために<br>
                             <span class="text-[var(--color-accent)] relative inline-block">
                                 仕組みで叶える食卓
                                 <span class="absolute bottom-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-[var(--color-gold)] to-transparent opacity-60"></span>
@@ -565,8 +565,10 @@
                 </div>
             </div>
 
+            <!-- メッセージ修正：スマホで「この仕組みのレシピが」を2行目に配置 -->
             <div class="text-base md:text-xl opacity-80 max-w-3xl mx-auto font-medium text-center leading-loose tracking-wider">
-                AIの力と自身の経験を詰め込んだこの仕組みのレシピが<br>
+                AIの力と自身の経験を詰め込んだ<br class="md:hidden">
+                この仕組みのレシピが<br>
                 あなたの毎日をより健やかで、自信に満ちたものに<br class="hidden md:block">
                 変えるきっかけになると嬉しいです
             </div>
