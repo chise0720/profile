@@ -61,9 +61,6 @@
         }
         #splash-name.active {
             opacity: 1;
-        }
-        #splash-name.active {
-            opacity: 1;
             transform: translateY(0);
         }
 
@@ -261,20 +258,20 @@
                     ～AIで、体にやさしい健康習慣を自動化する～
                 </div>
                 <div class="text-base md:text-xl opacity-80 font-medium leading-loose tracking-wider mb-6">
-                    <!-- 文章修正：パソコン版でもご指定の段落・改行になるよう構成 -->
+                    <!-- 文章：指示されたパソコン版・スマホ版それぞれの段落・改行設定を完全維持 -->
                     <p>
                         自炊は本来、楽しいもの<br>
                         だけれど栄養計算やメニュー選びは、<br>
-                        Webマーケターとして忙しく働く私にとって<br>
+                        Webマーケターとして忙しく働く私にとって<br class="md:hidden">
                         大きな負担でした<br><br>
                         
                         だからこそ私は、無理に頑張るのではなく、<br>
-                        AIを味方にして食事管理を<br>
+                        AIを味方にして食事管理を<br class="md:hidden">
                         仕組み化することを選びました<br><br>
                         
                         自炊を「義務」から「心地よい習慣」へ<br>
-                        AIの力で、体にも心にも やさしい暮らしをつくる<br>
-                        そんなライフスタイルを、<br>
+                        AIの力で、体にも心にも やさしい暮らしをつくる<br class="md:hidden">
+                        そんなライフスタイルを、<br class="md:hidden">
                         この場所から共有していきたいと思います
                     </p>
                 </div>
@@ -366,31 +363,36 @@
     </section>
 
     <!-- 04. GPTs お手伝いシェフNIKO（ニコ） -->
-    <section id="ai" class="py-10 px-6 bg-white overflow-hidden">
+    <section id="ai" class="py-10 px-4 md:px-6 bg-white overflow-hidden">
         <div class="max-w-6xl mx-auto">
             <div class="reveal text-left mb-6">
+                <!-- タイトル：指示通り他セクションと同じサイズを維持 -->
                 <h2 class="text-[var(--color-dark-brown)] flex items-center mb-1">
                     <span class="font-bold text-[#d4af37] text-[1.1rem] md:text-[1.4rem] lg:text-[1.6rem] mr-4 md:mr-6 leading-none">04</span>
                     <div class="flex flex-col items-start border-t border-b border-[#a68b6d]/30 py-2">
                         <span class="text-xl md:text-2xl lg:text-3xl font-bold tracking-wider">GPTs お手伝いシェフNIKO（ニコ）</span>
                     </div>
                 </h2>
-                <div class="text-sm md:text-base opacity-70 font-medium mb-4 leading-relaxed">
+                <!-- 説明文：大きく読みやすく修正 -->
+                <div class="text-lg md:text-2xl opacity-80 font-medium mb-4 leading-relaxed">
                     独自のレシピを学習させた「お手伝いシェフNIKO」が<br class="hidden md:block">疲れて帰っても今日の夕食メニューを一汁二菜で分量と手順を考えてくれます。
                 </div>
 
                 <div class="border-t border-b border-[#a68b6d]/20 py-3 mb-6 inline-block w-full sm:w-auto">
-                    <p class="text-[11px] md:text-xs text-[#a68b6d] font-bold leading-relaxed">
+                    <p class="text-sm md:text-base text-[#a68b6d] font-bold leading-relaxed">
                         ※提案内容は医療的な診断や治療、専門家による食事内容ではありません
                     </p>
                 </div>
             </div>
 
-            <div class="reveal flex justify-center mt-2">
-                <div class="w-full max-w-4xl bg-white rounded-3xl shadow-2xl border-[6px] border-[#2b1a13] overflow-hidden leading-[0]">
-                    <img src="https://raw.githubusercontent.com/mokomoko-ai/profile/main/assets/kasutamu２.webp" 
-                         alt="お手伝いシェフNIKO UI" 
-                         class="w-full h-auto">
+            <!-- 画像エリア：指示された猫のキャラクター入り画像(kasutamu3.webp)を使用 -->
+            <!-- 枠を最大限大きくし、中身がハッキリ見える1.5倍のサイズ感を実現。見切れない構造に修正 -->
+            <div class="reveal flex justify-center mt-2 w-full">
+                <div class="w-full max-w-6xl bg-white rounded-3xl shadow-[0_30px_60px_-12px_rgba(0,0,0,0.25)] border-[6px] md:border-[12px] border-[#2b1a13] overflow-hidden leading-[0]">
+                    <!-- 中身の猫と文字が1.5倍に見えるよう、画像コンテナ(max-w-6xl)を広げて大きく表示。w-fullで全幅表示 -->
+                    <img src="https://raw.githubusercontent.com/mokomoko-ai/profile/main/assets/kasutamu3.webp" 
+                         alt="お手伝いシェフNIKO（猫のアイコン入りチャット画面）" 
+                         class="w-full h-auto object-contain">
                 </div>
             </div>
         </div>
@@ -534,7 +536,7 @@
                     
                     <!-- メインコンテンツ：見切れないようにvwベースの可変フォントサイズを採用 -->
                     <div class="relative z-10 text-center">
-                        <span class="text-[3.4vw] min-[450px]:text-[15px] sm:text-xl md:text-2xl lg:text-3xl font-bold text-[var(--color-dark-brown)] tracking-[0.15em] leading-relaxed block">
+                        <span class="text-[3.4vw] min-[450px]:text-[15px] sm:text-xl md:text-2xl lg:text-3xl font-bold text-[var(--color-dark-brown)] tracking-[0.15em] leading-relaxed block whitespace-nowrap">
                             私だけではなく、<br class="md:hidden">みんなの理想の体型を維持するために<br>
                             <span class="text-[var(--color-accent)] relative inline-block">
                                 仕組みで叶える食卓
