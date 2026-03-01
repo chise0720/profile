@@ -271,7 +271,7 @@
                         
                         自炊を「義務」から「心地よい習慣」へ<br>
                         AIの力で、体にも心にも やさしい暮らしをつくる<br class="md:hidden">
-                        そんなライフスタイルを、<br class="md:hidden">
+                        そんなライフスタイルを、<br>
                         この場所から共有していきたいと思います
                     </p>
                 </div>
@@ -366,32 +366,34 @@
     <section id="ai" class="py-10 px-4 md:px-6 bg-white overflow-hidden">
         <div class="max-w-6xl mx-auto">
             <div class="reveal text-left mb-6">
-                <!-- タイトル：指示通り他セクションと同じサイズを維持 -->
+                <!-- タイトル：指示通り、標準サイズを維持 -->
                 <h2 class="text-[var(--color-dark-brown)] flex items-center mb-1">
                     <span class="font-bold text-[#d4af37] text-[1.1rem] md:text-[1.4rem] lg:text-[1.6rem] mr-4 md:mr-6 leading-none">04</span>
                     <div class="flex flex-col items-start border-t border-b border-[#a68b6d]/30 py-2">
                         <span class="text-xl md:text-2xl lg:text-3xl font-bold tracking-wider">GPTs お手伝いシェフNIKO（ニコ）</span>
                     </div>
                 </h2>
-                <!-- 説明文：大きく読みやすく修正 -->
-                <div class="text-lg md:text-2xl opacity-80 font-medium mb-4 leading-relaxed">
-                    独自のレシピを学習させた「お手伝いシェフNIKO」が<br class="hidden md:block">疲れて帰っても今日の夕食メニューを一汁二菜で分量と手順を考えてくれます。
+                <!-- 説明文：スマホ版での段落分け指定を反映 -->
+                <div class="text-sm md:text-base opacity-70 font-medium mb-4 leading-relaxed">
+                    独自のレシピを学習させた<br class="md:hidden">
+                    「お手伝いシェフNIKO」が疲れて帰っても<br class="md:hidden">
+                    夕食メニューを一汁二菜で<br class="md:hidden">
+                    分量と手順を考えてくれます
                 </div>
 
                 <div class="border-t border-b border-[#a68b6d]/20 py-3 mb-6 inline-block w-full sm:w-auto">
-                    <p class="text-sm md:text-base text-[#a68b6d] font-bold leading-relaxed">
+                    <p class="text-[11px] md:text-xs text-[#a68b6d] font-bold leading-relaxed">
                         ※提案内容は医療的な診断や治療、専門家による食事内容ではありません
                     </p>
                 </div>
             </div>
 
-            <!-- 画像エリア：指示された猫のキャラクター入り画像(kasutamu3.webp)を使用 -->
-            <!-- 枠を最大限大きくし、中身がハッキリ見える1.5倍のサイズ感を実現。見切れない構造に修正 -->
+            <!-- 画像エリア：指示された猫のキャラクター入り画像を使用し、視認性を高めるため枠を広げて大きく表示 -->
             <div class="reveal flex justify-center mt-2 w-full">
-                <div class="w-full max-w-6xl bg-white rounded-3xl shadow-[0_30px_60px_-12px_rgba(0,0,0,0.25)] border-[6px] md:border-[12px] border-[#2b1a13] overflow-hidden leading-[0]">
-                    <!-- 中身の猫と文字が1.5倍に見えるよう、画像コンテナ(max-w-6xl)を広げて大きく表示。w-fullで全幅表示 -->
+                <div class="w-full max-w-5xl bg-white rounded-3xl shadow-[0_30px_60px_-12px_rgba(0,0,0,0.25)] border-[6px] md:border-[12px] border-[#2b1a13] overflow-hidden leading-[0]">
+                    <!-- 中身がハッキリ見えるよう、全幅(w-full)で大きく表示。端が切れないよう object-contain を使用 -->
                     <img src="https://raw.githubusercontent.com/mokomoko-ai/profile/main/assets/kasutamu3.webp" 
-                         alt="お手伝いシェフNIKO（猫のアイコン入りチャット画面）" 
+                         alt="お手伝いシェフNIKO（猫のアイコン入り）" 
                          class="w-full h-auto object-contain">
                 </div>
             </div>
